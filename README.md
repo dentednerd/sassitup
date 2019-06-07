@@ -1,3 +1,9 @@
-# New Project Creator
+# Node Project Creator
 
-A sprint to create a new project creator app with Node.
+A Node app to automatically create a new project with Chai, Mocha, Husky and ESLint.
+
+## Usage
+
+```sh
+node create <directory> <file content (optional)>
+```
