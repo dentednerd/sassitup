@@ -1,6 +1,4 @@
-module.exports = `const myFunction = function () {
-  return true
-}
+module.exports = `const myFunction = () => true
 
 module.exports = myFunction
 `;

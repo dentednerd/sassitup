@@ -43,6 +43,29 @@ const setupFiles = (path, data) => {
                               console.log(colors.red(`FAILED: create ${path}/README.md`, err));
                             } else {
                               console.log(colors.yellow(`\nCreated ${path} directory. Running npm install...`));
+                              exec('cd ' + path + ' && npm install && npm audit fix', (error, stdout, stderr) => {
+                                if (error) {
+                                  console.error(colors.red('FAILED: npm install'), stderr);
+                                  throw error;
+                                } else {
+                                  exec('cd ' + path + ' npm audit fix --force', (error, stdout, stderr) => {
+                                    if (error) {
+                                      console.error(colors.red('FAILED: npm audit fix'), stderr);
+                                      throw error;
+                                    } else {
+                                      exec('cd ' + path + ' && code .', (error, stdout, stderr) => {
+                                        if (error) {
+                                          console.error(colors.red('FAILED: open directory in VSCode'), stderr);
+                                          throw error;
+                                        } else {
+                                          console.log(colors.yellow(`\nOpened ${path} in VSCode.`));
+                                          console.log(colors.cyan(`\nYour project ${path} is ready! Happy coding!\n`));
+                                        }
+                                      });
+                                    }
+                                  })
+                                }
+                              });
                             }
                           });
                         }
@@ -55,32 +78,6 @@ const setupFiles = (path, data) => {
           });
         }
       });
-    }
-  });
-}
-
-const npmInstall = (path) => {
-  exec('cd ' + path + ' && npm install && npm audit fix', (error, stdout, stderr) => {
-    if (error) {
-      console.error(colors.red('FAILED: npm install'), stderr);
-      throw error;
-    } else {
-      exec('cd ' + path + ' npm audit fix --force', (error, stdout, stderr) => {
-        if (error) {
-          console.error(colors.red('FAILED: npm audit fix'), stderr);
-          throw error;
-        } else {
-          exec('cd ' + path + ' && code .', (error, stdout, stderr) => {
-            if (error) {
-              console.error(colors.red('FAILED: open directory in VSCode'), stderr);
-              throw error;
-            } else {
-              console.log(colors.yellow(`\nOpened ${path} in VSCode.`));
-              console.log(colors.cyan(`\nYour project ${path} is ready! Happy coding!\n`));
-            }
-          });
-        }
-      })
     }
   });
 }
@@ -99,7 +96,6 @@ const newProject = () => {
   }
   else {
     setupFiles(path, data);
-    npmInstall(path);
   }
 };
 
