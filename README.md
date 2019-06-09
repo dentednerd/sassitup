@@ -1,4 +1,4 @@
-# Node Project Creator
+# NodeItUp
 
 A Node app to automatically create a new project with Chai, Mocha, Husky and ESLint.
 

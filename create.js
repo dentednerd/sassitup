@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 const { exec } = require('child_process');
 const colors = require('colors');
@@ -5,6 +7,8 @@ const userInput = process.argv;
 const packageJS = require('./package.js');
 const specFile = require('./spec.js');
 const gitIgnore = require('./gitignore.js');
+const backupData = require('./data.js');
+const readme = require('./readme.js');
 
 const setupFiles = (path, data) => {
   if (!path) {
@@ -22,24 +26,23 @@ const setupFiles = (path, data) => {
             if (err) {
               console.log(colors.red('FAILED:  create index.spec.js'));
             } else {
-              fs.mkdir(path + '/src', (err) => {
+              fs.writeFile(path + '/index.js', data, (err) => {
                 if (err) {
-                  console.log(colors.red(`FAILED: create /${path}/src`, err));
+                  console.log(colors.red(`FAILED: create ${path}/index.js`, err));
                 } else {
-                  fs.writeFile(path + '/index.js', data, (err) => {
+                  fs.writeFile(path + '/.gitignore', gitIgnore, (err) => {
                     if (err) {
-                      console.log(colors.red(`FAILED: create ${path}/index.js`, err));
+                      console.log(colors.red(`FAILED: create /${path}/.gitignore`, err));
                     } else {
-                      fs.writeFile(path + '/.gitignore', gitIgnore, (err) => {
+                      fs.writeFile(path + '/' + 'package.json', packageJS, (err) => {
                         if (err) {
-                          console.log(colors.red(`FAILED: create /${path}/.gitignore`, err));
+                          console.log(colors.red(`FAILED: create /${path}/package.json`, err));
                         } else {
-                          fs.writeFile(path + '/' + 'package.json', packageJS, (err) => {
+                          fs.writeFile(path + '/README.md', readme, (err) => {
                             if (err) {
-                              console.log(colors.red(`FAILED: create /${path}/package.json`, err));
+                              console.log(colors.red(`FAILED: create ${path}/README.md`, err));
                             } else {
-                              console.log(colors.yellow(`\n/${path} files created.`));
-                              console.log(colors.yellow(`\nRunning npm install...`));
+                              console.log(colors.yellow(`\nCreated ${path} directory. Running npm install...`));
                             }
                           });
                         }
@@ -72,7 +75,7 @@ const npmInstall = (path) => {
               console.error(colors.red('FAILED: open directory in VSCode'), stderr);
               throw error;
             } else {
-              console.log(colors.yellow(`\nOpened /${path} in VSCode.`));
+              console.log(colors.yellow(`\nOpened ${path} in VSCode.`));
               console.log(colors.cyan(`\nYour project ${path} is ready! Happy coding!\n`));
             }
           });
@@ -84,9 +87,12 @@ const npmInstall = (path) => {
 
 const newProject = () => {
   const path = userInput[2];
-  const data = userInput[3];
+  let data = userInput[3];
   if (!path) {
     return console.log('Please provide a path.');
+  }
+  if (!data) {
+    data = backupData;
   }
   if (fs.existsSync(path)) {
     console.log(`The directory ${path} already exists.`);
