@@ -2,8 +2,16 @@
 
 A Node app to automatically create a new project with Chai, Mocha, Husky and ESLint.
 
+## Installation
+
+```sh
+git clone https://github.com/dentednerd/nodeitup.git
+cd ./nodeitup
+npm install
+```
+
 ## Usage
 
 ```sh
-node create <directory> <file content (optional)>
+nodeitup <directory> <file content (optional)>
 ```

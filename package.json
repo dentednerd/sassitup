@@ -33,5 +33,8 @@
   "bugs": {
     "url": "https://github.com/dentednerd/NewProjectCreatorNC5/issues"
   },
-  "homepage": "https://github.com/dentednerd/NewProjectCreatorNC5#readme"
+  "homepage": "https://github.com/dentednerd/NewProjectCreatorNC5#readme",
+  "dependencies": {
+    "colors": "^1.4.0"
+  }
 }
