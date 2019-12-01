@@ -8,6 +8,7 @@ A Node app to automatically create a new project with Chai, Mocha, Husky and ESL
 git clone https://github.com/dentednerd/nodeitup.git
 cd ./nodeitup
 npm install
+npm link
 ```
 
 ## Usage
