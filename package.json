@@ -26,14 +26,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dentednerd/NewProjectCreatorNC5.git"
+    "url": "git+https://github.com/dentednerd/nodeitup.git"
   },
   "author": "Jo Imlay / dentednerd",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dentednerd/NewProjectCreatorNC5/issues"
+    "url": "https://github.com/dentednerd/nodeitup/issues"
   },
-  "homepage": "https://github.com/dentednerd/NewProjectCreatorNC5#readme",
+  "homepage": "https://github.com/dentednerd/nodeitup#readme",
   "dependencies": {
     "colors": "^1.4.0"
   }
