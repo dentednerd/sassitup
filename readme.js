@@ -3,15 +3,11 @@ const path = userInput[2];
 
 module.exports = `# ${path}
 
-A new project created with NodeItUp.
+A new project created with SassItUp.
 
 ## Usage
 
-\`npm run start\`: Runs \`index.js\` in Node.
-
-\`npm test\`: Runs \`spec/index.spec.js\` in Mocha, using Chai assertions, to test \`index.js\`.
-
-\`npm run lint\`: Runs ESLint with Standard config across the entire project. You can find the ESLint config in \`package.json\`.
+\`yarn start\` or \`gulp\`: Starts watching for changes in the Sass directory. On first run, this will create the \`index.css\` file required by \`index.html\`.
 
 ## Git setup
 

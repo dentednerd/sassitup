@@ -1,24 +1,20 @@
 {
-  "name": "nodeitup",
+  "name": "sassitup",
   "version": "0.0.1",
-  "description": "Create a new JavaScript project with Chai, Mocha, Husky and ESLint.",
+  "description": "Create a new HTML project with Sass and Gulp.",
   "keywords": [
     "javascript",
     "node",
-    "chai",
-    "mocha",
-    "husky",
-    "eslint",
-    "test",
-    "testing",
-    "lint",
-    "linting",
+    "html",
+    "sass",
+    "css",
+    "gulp",
     "start",
     "create"
   ],
   "main": "create.js",
   "bin": {
-    "nodeitup": "create.js"
+    "sassitup": "create.js"
   },
   "scripts": {
     "start": "node create",
@@ -26,14 +22,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dentednerd/nodeitup.git"
+    "url": "git+https://github.com/dentednerd/sassitup.git"
   },
-  "author": "Jo Imlay / dentednerd",
+  "author": "Joey Imlay",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dentednerd/nodeitup/issues"
+    "url": "https://github.com/dentednerd/sassitup/issues"
   },
-  "homepage": "https://github.com/dentednerd/nodeitup#readme",
+  "homepage": "https://github.com/dentednerd/sassitup#readme",
   "dependencies": {
     "colors": "^1.4.0"
   }

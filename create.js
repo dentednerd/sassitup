@@ -4,25 +4,35 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const colors = require('colors');
 const userInput = process.argv;
-const specFile = require('./spec.js');
 const gitIgnore = require('./gitignore.js');
-const backupData = require('./data.js');
 const readme = require('./readme.js');
+const html = require('./html.js');
+const gulp = require('./gulp.js');
 
-const setupFiles = async (path, data) => {
+const sassDirs = ['abstracts', 'base', 'components', 'layout', 'pages', 'themes', 'vendors'];
+
+const errorLog = (e) => {
+  return console.log(colors.red(`Failed to create /${path}`, e));
+}
+
+const setupFiles = async (path) => {
   console.log(colors.yellow(`\nCreating ${path} directory...`));
-  await fs.mkdir(path, (e) => e && console.log(colors.red(`FAILED: create /${path}`, e)));
-  await fs.mkdir(`${path}/spec`, (e) => e && console.log(colors.red(`FAILED: create /${path}/spec`, e)));
-  await fs.writeFile(`${path}/spec/index.spec.js`, specFile, (e) => e && console.log(colors.red('FAILED:  create index.spec.js')));
-  await fs.writeFile(`${path}/index.js`, data, (e) => e && console.log(colors.red(`FAILED: create ${path}/index.js`, e)));
-  await fs.writeFile(`${path}/.gitignore`, gitIgnore, (e) => e && console.log(colors.red(`FAILED: create /${path}/.gitignore`, e)));
-  await fs.writeFile(`${path}/README.md`, readme, (e) => e && console.log(colors.red(`FAILED: create ${path}/README.md`, e)));
+  await fs.mkdir(path, (e) => e && errorLog(e));
+  await fs.mkdir(`${path}/sass`, (e) => e && errorLog(e));
+  sassDirs.forEach(async (dir) => {
+    await fs.mkdir(`${path}/sass/${dir}`, (e) => e && errorLog(e));
+  });
+  await fs.writeFile(`${path}/sass/index.sass`, '', (e) => e && errorLog(e));
+  await fs.writeFile(`${path}/index.html`, html, (e) => e && errorLog(e));
+  await fs.writeFile(`${path}/gulpfile.js`, gulp, (e) => e && errorLog(e));
+  await fs.writeFile(`${path}/.gitignore`, gitIgnore, (e) => e && errorLog(e));
+  await fs.writeFile(`${path}/README.md`, readme, (e) => e && errorLog(e));
   return;
 }
 
-const npmInstall = (path) => {
+const yarnInstall = (path) => {
   console.log(colors.yellow(`\nCreated ${path} directory. Installing packages...`));
-  execSync(`cd ${path} && npm init -y && npm install chai eslint eslint-config-standard eslint-plugin-import eslint-plugin-node eslint-plugin-promise husky mocha`, (error, stdout, stderr) => {
+  execSync(`cd ${path} && yarn init -y && yarn add gulp gulp-sass gulp-sourcemaps gulp-uglifycss`, (error, stdout, stderr) => {
     if (error) {
       console.log(`Error during NPM install: ${error.message}`);
       return;
@@ -34,24 +44,13 @@ const npmInstall = (path) => {
     console.log(`NPM install: ${stdout}`);
   });
 
-  console.log(colors.yellow(`Packages installed. Updating package.json...`));
+  console.log(colors.yellow(`\nPackages installed. Updating package.json...`));
 
   const packageToUpdate = fs.readFileSync(`${path}/package.json`);
   const packageContent = JSON.parse(packageToUpdate);
-  packageContent.description = "A new project created with NodeItUp.";
+  packageContent.description = "A new project created with SassItUp.";
   packageContent.scripts = {
-    "start": "node index.js",
-    "test": "mocha ./spec",
-    "lint": "eslint ./",
-    "precommit": "npm run lint && npm test"
-  };
-  packageContent.eslintConfig = {
-    "extends": "standard",
-    "env": {
-      "browser": true,
-      "node": true,
-      "mocha": true
-    }
+    "start": "gulp",
   };
 
   fs.writeFile(
@@ -59,27 +58,23 @@ const npmInstall = (path) => {
     JSON.stringify(packageContent, null, 2),
     (e) => e && console.log('FAILED: package.json update', e)
   );
-  console.log(colors.yellow(`package.json updated. Opening in VSCode...`));
+  console.log(colors.yellow(`\npackage.json updated. Opening in VSCode...`));
   return;
 }
 
 const newProject = async () => {
   const path = userInput[2];
-  let data = userInput[3];
   if (!path) {
     return console.log('Please provide a path.');
-  }
-  if (!data) {
-    data = backupData;
   }
   if (fs.existsSync(path)) {
     console.log(`The directory ${path} already exists.`);
   }
   else {
-    await setupFiles(path, data).then(async () => await npmInstall(path)).then(() => {
+    await setupFiles(path).then(async () => await yarnInstall(path)).then(() => {
       execSync(`cd ${path} && code .`, (error, stdout, stderr) => {
         if (error) {
-          console.error(colors.red('FAILED: open directory in VSCode'), stderr);
+          console.error(colors.red('Failed to open directory in VSCode\n'), stderr);
           throw error;
         }}
       );

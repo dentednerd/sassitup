@@ -1,12 +1,12 @@
-# NodeItUp
+# SassItUp
 
-A Node app to automatically create a new project with Chai, Mocha, Husky and ESLint.
+A Node app to automatically create a new web project with Sass and Gulp.
 
 ## Installation
 
 ```sh
-git clone https://github.com/dentednerd/nodeitup.git
-cd ./nodeitup
+git clone https://github.com/dentednerd/sassitup.git
+cd ./sassitup
 npm install
 npm link
 ```
@@ -14,5 +14,5 @@ npm link
 ## Usage
 
 ```sh
-nodeitup <directory> <file content (optional)>
+sassitup <directory>
 ```
