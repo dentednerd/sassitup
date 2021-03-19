@@ -16,3 +16,7 @@ npm link
 ```sh
 sassitup <directory>
 ```
+
+## Todo
+
+- expand to create the full [Sass boilerplate](https://github.com/KittyGiraudel/sass-boilerplate)
